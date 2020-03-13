@@ -12,3 +12,7 @@ Here, using the knowledge acquired with the Equality Chapter from the book Progr
 
 ## And you can use the idea to practice whatever you wish
 Pull requests of this "theorem" in other proof assistants are very welcome :D. The proof is kinda simple, it only requires some properties of equality.
+
+
+
+migo ignora esse pR please
