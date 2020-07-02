@@ -1,5 +1,7 @@
 # Naturals Explosion
 
+![typecheck](https://github.com/mayconamaro/natural-explosion/workflows/typecheck/badge.svg?event=push)
+
 ## What is it?
 A formally verified proof that if 0 equals 1 then all naturals are the same natural number.
 
