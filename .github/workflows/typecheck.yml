@@ -1,0 +1,64 @@
+name: typecheck
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  build:
+    name: typecheck
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        # os: [ubuntu-latest, macos-10.15, windows-2019]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install agda (Ubuntu)
+        run: sudo apt update && sudo apt install agda agda-bin 
+        #&& git clone https://github.com/agda/agda-stdlib.git && mkdir ~/.agda && echo "/home/runner/work/natural-deduction-consistency/natural-deduction-consistency/agda-stdlib/standard-library.agda-lib" > ~/.agda/libraries && echo "standard-library" > ~/.agda/defaults
+
+        if: matrix.os == 'ubuntu-latest'
+
+      # - name: Install stack (Windows)
+      #   run: choco install haskell-stack
+      #   if: matrix.os == 'windows-2019'
+
+      # - name: Cache dependencies (Unix)
+      #   uses: actions/cache@v1
+      #   if: matrix.os != 'windows-2019'
+      #   with:
+      #     path: ~/.stack
+      #     key: ${{ runner.os }}-store-${{ hashFiles('stack.yaml.lock') }}-${{ hashFiles('dffinder.cabal') }}
+
+      # - name: Cache dependencies (Windows)
+      #   uses: actions/cache@v1
+      #   if: matrix.os == 'windows-2019'
+      #   with:
+      #     path: 'C:\Users\runneradmin\AppData\Roaming\stack'
+      #     key: ${{ runner.os }}-store-${{ hashFiles('stack.yaml.lock') }}-${{ hashFiles('dffinder.cabal') }}
+
+      # - name: Cache GHC (Windows)
+      #   uses: actions/cache@v1
+      #   if: matrix.os == 'windows-2019'
+      #   with:
+      #     path: 'C:\Users\runneradmin\AppData\Local\Programs\stack'
+      #     key: ghc-${{ hashFiles('stack.yaml.lock') }}
+
+      - name: Check natural-explosion
+        run: agda NaturalExplosion.agda
+
+      # - name: Package dffinder
+      #   shell: bash
+      #   run: |
+      #     mkdir package
+      #     dir=$(stack path --dist-dir)/build/dffinder
+      #     [[ -e "$dir/dffinder" ]] && cp "$dir/dffinder" package/dffinder
+      #     [[ -e "$dir/dffinder.exe" ]] && cp "$dir/dffinder.exe" package/dffinder.exe
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: dffinder-${{ runner.os }}
+      #     path: package
